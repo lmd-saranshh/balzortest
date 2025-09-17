@@ -1,0 +1,73 @@
+﻿@page "/"
+
+<div id="shelf" class="relative h-full flex flex-row flex-auto snap-x snap-mandatory scroll-pr-2 overflow-x-auto overflow-y-hidden py-2 px-2">
+    <div id="bladeStart" />
+    <div class="relative flex snap-end snap-always flex-col flex-none overflow-hidden shadow-card2 rounded text-foreground bg-background [&:not(:nth-child(2))]:ml-2 w-[100%] min-w-[100%] max-w-[100%] 2xl:w-[calc(50%-0.5rem)] 2xl:min-w-[calc(50%-0.5rem)] 2xl:max-w-[calc(50%-0.5rem)]">
+        
+        <div class="z-10 flex h-[44px] min-h-[44px] justify-between items-center overflow-hidden px-3 py-3 space-x-1 shadow-header border-b border-stroke3">
+                <div class="flex items-center space-x-2 overflow-hidden">
+                        <h2 class="truncate text-base font-semibold tracking-tight">DATA GRID SAMPLE</h2>
+                </div>
+                <div class="grow flex justify-center items-center space-x-2 overflow-hidden">
+                </div>
+                <div class="flex items-center space-x-2">
+                </div>
+            </div>
+        <div class="z-0 flex flex-col grow overflow-y-auto overflow-x-hidden h-full text-sm font-normal bg-backgroundBlade">
+            <SfGrid DataSource="@Orders"
+                    Height="100%"
+                    AllowSorting="true"
+                    AllowFiltering="true"
+                    AllowResizing="true"
+                    AllowReordering="true"
+                    ShowColumnMenu="true"
+                    EnablePersistence="true"
+                    EnableVirtualization="true"
+                    AllowGrouping="true">
+                <GridFilterSettings Type="FilterType.Excel" />
+                <GridColumns>
+                    <GridColumn Field=@nameof(Order.OrderID) HeaderText="Order ID" ClipMode="ClipMode.EllipsisWithTooltip"
+                                TextAlign="TextAlign.Right" Width="120"></GridColumn>
+                    <GridColumn Field=@nameof(Order.CustomerID) HeaderText="Customer Name" ClipMode="ClipMode.EllipsisWithTooltip"
+                                Width="80"></GridColumn>
+                    <GridColumn Field=@nameof(Order.OrderDate) HeaderText=" Order Date ClipMode Test" ClipMode="ClipMode.EllipsisWithTooltip"
+                                Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+                    <GridColumn Field=@nameof(Order.Description) HeaderText="DescriptionTestClipmode" ClipMode="ClipMode.EllipsisWithTooltip"
+                                Width="130"></GridColumn>
+                    <GridColumn Field=@nameof(Order.Description2) HeaderText="DescriptionTestClipmode" ClipMode="ClipMode.EllipsisWithTooltip"
+                                Width="130"></GridColumn>
+                    <GridColumn Field=@nameof(Order.Freight) HeaderText="Freight" ClipMode="ClipMode.EllipsisWithTooltip"
+                                Format="C2" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+
+    <div id="bladeEnd" />
+</div>
+@code {
+    public List<Order> Orders { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Orders = Enumerable.Range(1, 75).Select(x => new Order()
+        {
+            OrderID = 1000 + x,
+            CustomerID = (new string[] { "ALFKI", "ANANTR", "ANTON", "BLONP", "BOLID" })[new Random().Next(5)],
+            Freight = 2.1 * x,
+            OrderDate = DateTime.Now.AddDays(-x),
+            Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+            Description2 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        }).ToList();
+    }
+
+    public class Order
+    {
+        public int? OrderID { get; set; }
+        public string? CustomerID { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public string? Description { get; set; }
+        public string? Description2 { get; set; }
+        public double? Freight { get; set; }
+    }
+}
